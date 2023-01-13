@@ -1,1 +1,1 @@
-
+class InputFormatException implements Exception {}
