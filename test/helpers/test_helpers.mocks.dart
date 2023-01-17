@@ -3,17 +3,19 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i5;
 
 import 'package:fpdart/fpdart.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:whatsapp_direct_link/app/core/error/failure.dart' as _i5;
+import 'package:whatsapp_direct_link/app/core/error/failure.dart' as _i6;
+import 'package:whatsapp_direct_link/app/features/whatsapp_link/data/datasources/whatsapp_link_local_datasource.dart'
+    as _i4;
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/whatsapp_link.dart'
-    as _i6;
+    as _i7;
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/repositories/whatsapp_link_repository.dart'
     as _i3;
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_whatsapp_direct_link.dart'
-    as _i7;
+    as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -47,6 +49,27 @@ class _FakeWhatsappLinkRepository_1 extends _i1.SmartFake
         );
 }
 
+/// A class which mocks [WhatsappLinkLocalDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockWhatsappLinkLocalDataSource extends _i1.Mock
+    implements _i4.WhatsappLinkLocalDataSource {
+  MockWhatsappLinkLocalDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<void> save({required String? link}) => (super.noSuchMethod(
+        Invocation.method(
+          #save,
+          [],
+          {#link: link},
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+}
+
 /// A class which mocks [WhatsappLinkRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -57,16 +80,16 @@ class MockWhatsappLinkRepository extends _i1.Mock
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, String>> getLinkDirect(
-          {required _i6.WhatsappLink? whatsappLink}) =>
+  _i5.Future<_i2.Either<_i6.Failure, String>> getLinkDirect(
+          {required _i7.WhatsappLink? whatsappLink}) =>
       (super.noSuchMethod(
         Invocation.method(
           #getLinkDirect,
           [],
           {#whatsappLink: whatsappLink},
         ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, String>>.value(
-            _FakeEither_0<_i5.Failure, String>(
+        returnValue: _i5.Future<_i2.Either<_i6.Failure, String>>.value(
+            _FakeEither_0<_i6.Failure, String>(
           this,
           Invocation.method(
             #getLinkDirect,
@@ -74,14 +97,14 @@ class MockWhatsappLinkRepository extends _i1.Mock
             {#whatsappLink: whatsappLink},
           ),
         )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, String>>);
+      ) as _i5.Future<_i2.Either<_i6.Failure, String>>);
 }
 
 /// A class which mocks [GetWhatsappDirectLink].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGetWhatsappDirectLink extends _i1.Mock
-    implements _i7.GetWhatsappDirectLink {
+    implements _i8.GetWhatsappDirectLink {
   MockGetWhatsappDirectLink() {
     _i1.throwOnMissingStub(this);
   }
@@ -95,19 +118,19 @@ class MockGetWhatsappDirectLink extends _i1.Mock
         ),
       ) as _i3.WhatsappLinkRepository);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, String>> call(_i6.WhatsappLink? params) =>
+  _i5.Future<_i2.Either<_i6.Failure, String>> call(_i7.WhatsappLink? params) =>
       (super.noSuchMethod(
         Invocation.method(
           #call,
           [params],
         ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, String>>.value(
-            _FakeEither_0<_i5.Failure, String>(
+        returnValue: _i5.Future<_i2.Either<_i6.Failure, String>>.value(
+            _FakeEither_0<_i6.Failure, String>(
           this,
           Invocation.method(
             #call,
             [params],
           ),
         )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, String>>);
+      ) as _i5.Future<_i2.Either<_i6.Failure, String>>);
 }
