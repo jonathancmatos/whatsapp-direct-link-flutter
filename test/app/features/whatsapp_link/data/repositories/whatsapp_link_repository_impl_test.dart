@@ -10,45 +10,45 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/value_obj
 import '../../../../../helpers/test_helpers.mocks.dart';
 
 void main() {
-  late WhatsappLinkRepositoryImpl repositoryImpl;
+  const String url = "https://api.whatsapp.com/send?phone=61969771824&text=test+params";
   late MockWhatsappLinkLocalDataSource mockLocalDataSource;
+  late WhatsappLinkRepositoryImpl repositoryImpl;
   late WhatsappLink whatsappLink;
-  late String url;
 
   setUp(() {
     whatsappLink = WhatsappLink(
         phone: PhoneVO()..setValue = "(61) 9.6977-1824",
-        message: MessageVO()..setValue = "test params"
-    );
+        message: MessageVO()..setValue = "test params");
     mockLocalDataSource = MockWhatsappLinkLocalDataSource();
     repositoryImpl = WhatsappLinkRepositoryImpl(mockLocalDataSource);
-    url = "https://api.whatsapp.com/send?phone=61969771824&text=test+params";
   });
 
-  test('should return a string containing the url and its parameters',() async {
+  test('should return a string containing the url and its parameters',
+      () async {
     //act
-    final result = await repositoryImpl.getLinkDirect(whatsappLink: whatsappLink);
+    final result =
+        await repositoryImpl.getLinkDirect(whatsappLink: whatsappLink);
     //assert
     expect(result, equals(isA<Right>()));
-    expect(result, equals(Right(url)));
+    expect(result, equals(const Right(url)));
   });
 
   test('should store data locally when formed url is successful', () async {
     //arrange
-    when(mockLocalDataSource.save(link: url)).thenAnswer((_) async => Right(url));
+    when(mockLocalDataSource.save(any)).thenAnswer((_) async => true);
     //act
     await repositoryImpl.getLinkDirect(whatsappLink: whatsappLink);
     //assert
-    verify(mockLocalDataSource.save(link: url));
+    verify(mockLocalDataSource.save(url));
   });
 
   test('should return failure if the local data store fails.', () async {
     //arrange
-    when(mockLocalDataSource.save(link: url)).thenThrow(CacheException());
+    when(mockLocalDataSource.save(any)).thenThrow(CacheException());
     //act
     final result = await repositoryImpl.getLinkDirect(whatsappLink: whatsappLink);
     //assert
-    verify(mockLocalDataSource.save(link: url));
+    verify(mockLocalDataSource.save(url));
     expect(result, Left(CacheFailure()));
   });
 }
