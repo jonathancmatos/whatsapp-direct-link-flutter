@@ -10,5 +10,5 @@ class MessageVO extends ValueObject<String?> {
   set setValue(String? value) => super.setValue = value?.replaceAll(' ', '+');
 
   @override
-  Either<MessageVO, String> validate() => Left(this);
+  Either<String, MessageVO> validate() => Right(this);
 }

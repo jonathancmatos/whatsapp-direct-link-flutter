@@ -16,7 +16,7 @@ void main() {
     //act
     final result = whatsappLink.validate();
     //assert
-    expect(result, equals(isA<Left>()));
+    expect(result, equals(isA<Right>()));
   });
 
   test("should return failure on entity validation", () {
@@ -28,6 +28,6 @@ void main() {
     //act
     final result = whatsappLink.validate();
     //assert
-    expect(result, equals(isA<Right>()));
+    expect(result, equals(isA<Left>()));
   });
 }

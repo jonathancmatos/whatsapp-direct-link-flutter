@@ -11,7 +11,7 @@ const CACHE_LINK_HISTORIC = "CACHE_LINK_HISTORIC";
 
 class WhatsappLinkLocalDataSourceImpl implements WhatsappLinkLocalDataSource {
   final SharedPreferences sharedPreferences;
-  WhatsappLinkLocalDataSourceImpl({required this.sharedPreferences});
+  WhatsappLinkLocalDataSourceImpl(this.sharedPreferences);
 
   @override
   Future<void> save(String url) async {

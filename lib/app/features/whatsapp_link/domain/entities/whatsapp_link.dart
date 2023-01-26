@@ -14,11 +14,11 @@ class WhatsappLink extends Equatable with Entity {
   List<Object?> get props => [phone, message];
 
   @override
-  Either<WhatsappLink, String> validate() {
-    if (phone.validate().isRight() || message.validate().isRight()) {
-      return const Right("Por favor, informe os dados obrigatórios.");
+  Either<String, WhatsappLink> validate() {
+    if (phone.validate().isLeft() || message.validate().isLeft()) {
+      return const Left("Por favor, informe os dados obrigatórios.");
     } else {
-      return Left(this);
+      return Right(this);
     }
   }
 }

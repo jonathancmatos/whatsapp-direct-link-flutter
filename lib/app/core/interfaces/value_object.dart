@@ -7,7 +7,7 @@ abstract class ValueObject<T> {
 
   String get getValue => _value.toString();
 
-  Either<ValueObject<T>, String> validate();
+  Either<String,ValueObject<T>> validate();
 
   @override
   int get hashCode => _value.hashCode;

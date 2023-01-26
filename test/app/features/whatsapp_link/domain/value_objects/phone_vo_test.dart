@@ -33,6 +33,6 @@ void main() {
     //act
     phoneVO.setValue = str;
     //assert
-    expect(phoneVO.validate(), equals(isA<Right>()));
+    expect(phoneVO.validate(), equals(isA<Left>()));
   });
 }

@@ -12,8 +12,7 @@ void main() {
 
   setUp(() {
     mockSharedPreferences = MockSharedPreferences();
-    dataSource = WhatsappLinkLocalDataSourceImpl(
-        sharedPreferences: mockSharedPreferences);
+    dataSource = WhatsappLinkLocalDataSourceImpl(mockSharedPreferences);
   });
 
   group("cacheWhatsappLink", () {

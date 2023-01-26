@@ -5,16 +5,23 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/sta
 
 class WhatsappLinkStore extends ValueNotifier<WhatsappLinkState> {
   final GetWhatsappDirectLink getWhatsappDirectLink;
-  WhatsappLinkStore({required this.getWhatsappDirectLink})
+  WhatsappLinkStore(this.getWhatsappDirectLink)
       : super(InitialWhatsappLinkState());
 
 
   Future<void> getUrlGenerate({required WhatsappLink whatsappLink}) async {
-    value = LoadingWhatsappLinkState();
-    final failureOrUrl = await getWhatsappDirectLink(whatsappLink);
-    failureOrUrl.fold(
-      (f) => value = ErrorWhatsappLinkState("Não foi possivel guardar os dados localmente."), 
-      (s) => value = SuccessWhatsappLinkState(s)
+    final formValid = whatsappLink.validate();
+    
+    formValid.fold(
+      (f) => value = ErrorWhatsappLinkState("Todos os dados precisam ser validos."), 
+      (s) async{
+        value = LoadingWhatsappLinkState();
+        final failureOrUrl = await getWhatsappDirectLink(whatsappLink);
+        failureOrUrl.fold(
+          (f) => value = ErrorWhatsappLinkState("Não foi possivel guardar os dados localmente."), 
+          (s) => value = SuccessWhatsappLinkState(s)
+        );
+      }
     );
   }
 }

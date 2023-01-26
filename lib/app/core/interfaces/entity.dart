@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart';
 
 abstract class Entity {
 
-  Either<Entity, String> validate();
+  Either<String, Entity> validate();
 
   @override
   bool operator == (Object other) {

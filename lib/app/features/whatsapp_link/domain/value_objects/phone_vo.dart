@@ -10,12 +10,12 @@ class PhoneVO extends ValueObject<String> {
   set setValue(String value) => super.setValue = value.replaceAll(RegExp(r'[^0-9]'), '');
 
   @override
-  Either<PhoneVO, String> validate() {
+  Either<String, PhoneVO> validate() {
     if (super.getValue.isEmpty) {
-      return const Right('Por favor, informe o número de telefone.');
+      return const Left('Por favor, informe o número de telefone.');
     } else if (super.getValue.length != 11) {
-      return const Right('Por favor, informe o número de telefone.');
+      return const Left('Por favor, informe o número de telefone válido.');
     }
-    return Left(this);
+    return Right(this);
   }
 }

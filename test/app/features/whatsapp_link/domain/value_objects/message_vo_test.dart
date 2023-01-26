@@ -24,7 +24,7 @@ void main() {
       //act
       messageVO.setValue = str;
       //assert
-      expect(messageVO.validate(), equals(isA<Left>()));
+      expect(messageVO.validate(), equals(isA<Right>()));
   });
 
 }

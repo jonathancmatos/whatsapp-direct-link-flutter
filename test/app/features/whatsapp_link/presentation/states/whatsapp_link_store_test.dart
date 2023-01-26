@@ -19,20 +19,34 @@ void main() {
 
   setUp(() {
     mockGetWhatsappDirectLink = MockGetWhatsappDirectLink();
-    store = WhatsappLinkStore(getWhatsappDirectLink: mockGetWhatsappDirectLink);
-    whatsappLink = WhatsappLink(
-        phone: PhoneVO()..setValue = "(61) 9.6977-1824",
-        message: MessageVO()..setValue = "test params"
-    );
+    store = WhatsappLinkStore(mockGetWhatsappDirectLink);
   });
+
+  void setValuesModelValid() => whatsappLink = WhatsappLink(
+      phone: PhoneVO()..setValue = "(61) 9.6977-1824",
+      message: MessageVO()..setValue = "test params");
+
+  void setValuesModelInvalid() => whatsappLink = WhatsappLink(
+      phone: PhoneVO()..setValue = "(61) 6977-1824",
+      message: MessageVO()..setValue = "test params");
 
   test('initialState should be Initial', () {
     //assert
     expect(store.value, isA<InitialWhatsappLinkState>());
   });
 
+  test('should return error case the form is not validated', () async {
+    //arrange
+    setValuesModelInvalid();
+    //act
+    await store.getUrlGenerate(whatsappLink: whatsappLink);
+    //assert
+    expect(store.value, isA<ErrorWhatsappLinkState>());
+  });
+
   test('should get data from the user case', () async {
     //arrange
+    setValuesModelValid();
     when(mockGetWhatsappDirectLink(any))
         .thenAnswer((_) async => const Right(url));
     //act
@@ -43,6 +57,7 @@ void main() {
 
   test('should emit [loading, success] when data is gotten success', () async {
     //arrange
+    setValuesModelValid();
     when(mockGetWhatsappDirectLink(any))
         .thenAnswer((_) async => const Right(url));
 
@@ -59,6 +74,7 @@ void main() {
 
   test('should emit [loading, error] when cache data fails', () async {
     //arrange
+    setValuesModelValid();
     when(mockGetWhatsappDirectLink(any))
         .thenAnswer((_) async => Left(CacheFailure()));
 
