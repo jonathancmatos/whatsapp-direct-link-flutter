@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/pages/whatsapp_link/widgets/form_widget.dart';
-import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/pages/whatsapp_link/widgets/title_widget.dart';
+import 'widgets/widgets.dart';
 
 class WhatsappLinkPage extends StatelessWidget {
   const WhatsappLinkPage({super.key});
@@ -10,11 +9,11 @@ class WhatsappLinkPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("WhatsApp Link"),
-        actions: [
-          IconButton(
-            onPressed: () {}, 
-            icon: const Icon(Icons.list),
-          )
+        actions: const [
+          // IconButton(
+          //   onPressed: () {}, 
+          //   icon: const Icon(Icons.restore),
+          // )
         ],
       ),
       body: Center(

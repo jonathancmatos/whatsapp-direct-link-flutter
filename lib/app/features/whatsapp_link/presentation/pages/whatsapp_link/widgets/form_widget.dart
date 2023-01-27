@@ -49,11 +49,11 @@ class _FormWidgetState extends State<FormWidget> {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  /** Input Number */
                   TextFormField(
                     enabled: !isLoading,
                     keyboardType: TextInputType.phone,
                     decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
                       hintText: "(00) 0.0000-000",
                     ),
                     validator: (v) =>
@@ -61,12 +61,12 @@ class _FormWidgetState extends State<FormWidget> {
                     onSaved: (v) => phoneVO.setValue = v ?? "",
                   ),
                   const SizedBox(height: 20),
+                  /** Input Message */
                   TextFormField(
                     enabled: !isLoading,
                     keyboardType: TextInputType.multiline,
                     maxLines: 3,
                     decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
                       hintText: "Digite uma mensagem.",
                     ),
                     validator: (v) =>
@@ -74,23 +74,17 @@ class _FormWidgetState extends State<FormWidget> {
                     onSaved: (v) => messageVO.setValue = v,
                   ),
                   const SizedBox(height: 45),
-                  SizedBox(
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: !isLoading
-                          ? () => generateLinkWhatsapp(state: state)
-                          : null,
-                      child: !isLoading
-                          ? const Text("GERAR LINK")
-                          : const LoadButtonWidget(),
-                    ),
+                   /** Button Link Generate */
+                  ElevatedButton(
+                    onPressed: !isLoading ? generateLinkWhatsapp : null,
+                    child: !isLoading ? const Text("GERAR LINK") : const LoadButtonWidget(),
                   )
                 ]),
           );
         });
   }
 
-  void generateLinkWhatsapp({required WhatsappLinkState state}) async {
+  void generateLinkWhatsapp() async {
     formKey.currentState?.save();
     if (formKey.currentState!.validate()) {
       await controller.getUrlGenerate(

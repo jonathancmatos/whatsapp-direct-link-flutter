@@ -6,7 +6,7 @@ class LoadButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SizedBox(
-      height: 24, width: 24,
+      height: 16, width: 16,
       child: CircularProgressIndicator(
         valueColor: AlwaysStoppedAnimation(Colors.white),
       ),

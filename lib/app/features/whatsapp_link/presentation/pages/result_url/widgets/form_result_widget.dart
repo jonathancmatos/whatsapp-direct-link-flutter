@@ -12,35 +12,39 @@ class FormResultWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextFormField(
-          textAlignVertical: TextAlignVertical.center,
-          initialValue: url,
-          enabled: false,
-          keyboardType: TextInputType.multiline,
-          maxLines: 3,
-          decoration: const InputDecoration(
-            fillColor: Colors.grey,
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.link),
+        /** Input Result **/
+        SizedBox(
+          height: 90,
+          child: TextFormField(
+            initialValue: url,
+            enabled: false,
+            expands: true,
+            maxLines: null,
+            keyboardType: TextInputType.multiline,
+            decoration: const InputDecoration(
+              filled: true,
+              fillColor: Color.fromARGB(255, 235, 235, 235),
+              prefixIcon: Icon(Icons.link, color: Colors.black),
+            ),
+            style: const TextStyle(
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
         const SizedBox(height: 42),
-        SizedBox(
-          height: 56,
-          child: ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.grey)),
-            onPressed: copyUrl,
-            child: const Text("COPIAR LINK"),
-          ),
+        /** Button Copy **/
+        ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(const Color(0xff9C9C9C))),
+          onPressed: copyUrl,
+          child: const Text("COPIAR LINK"),
         ),
         const SizedBox(height: 24),
-        SizedBox(
-          height: 56,
-          child: ElevatedButton(
-            onPressed: openUrl,
-            child: const Text("ABRIR WHATSAPP"),
-          ),
+        /** Button Open **/
+        ElevatedButton(
+          onPressed: openUrl,
+          child: const Text("ABRIR WHATSAPP"),
         ),
       ],
     );

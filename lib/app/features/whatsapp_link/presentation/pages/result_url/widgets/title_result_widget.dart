@@ -8,11 +8,13 @@ class TitleResultWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Icon(Icons.check_circle, size: 90),
-        const SizedBox(height: 32),
-        Text("Seu link de WhatsApp foi gerado.", 
+        Icon(Icons.check_circle, size: 80, color: Theme.of(context).primaryColor),
+        const SizedBox(height: 24),
+        Text("Seu link de WhatsApp foi \n gerado.", 
           style: Theme.of(context).textTheme.headline5?.copyWith(
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
+            fontSize: 26,
+            height: 1.5
           ),
           textAlign: TextAlign.center,  
         )
