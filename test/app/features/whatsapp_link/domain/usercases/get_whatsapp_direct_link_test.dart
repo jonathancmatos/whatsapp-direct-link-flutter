@@ -5,7 +5,6 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_whatsapp_direct_link.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/value_objects/message_vo.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/value_objects/phone_vo.dart';
-
 import '../../../../../helpers/test_helpers.mocks.dart';
 
 void main() {
@@ -24,7 +23,7 @@ void main() {
   test('should return a string straight from the repository.', () async {
     //arrange
     when(repository.getLinkDirect(whatsappLink: whatsappLink))
-        .thenAnswer((_) async => const Right("https://api.whatsapp.com/send"));
+        .thenAnswer((_) async => const Right("https://wa.me/"));
     //act
     var result = await usercase(whatsappLink);
     //assert
