@@ -6,6 +6,7 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/data/models/link
 abstract class WhatsappLinkLocalDataSource {
   Future<void> save(String url);
   Future<List<LinkHistoricModel>>? all();
+  Future<bool>? removeAll();
 }
 
 const CACHE_LINK_HISTORIC = "CACHE_LINK_HISTORIC";
@@ -47,6 +48,18 @@ class WhatsappLinkLocalDataSourceImpl implements WhatsappLinkLocalDataSource {
         return result.map((e) => LinkHistoricModel.fromJson(e)).toList();
       }
       return [];
+    } catch (e) {
+      throw CacheException();
+    }
+  }
+
+  @override
+  Future<bool>? removeAll() async {
+    try {
+      if (!sharedPreferences.containsKey(CACHE_LINK_HISTORIC)) {
+        return false;
+      }
+      return await sharedPreferences.remove(CACHE_LINK_HISTORIC);
     } catch (e) {
       throw CacheException();
     }

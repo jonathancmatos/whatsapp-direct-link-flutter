@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:whatsapp_direct_link/app/core/error/exception.dart';
-import 'package:whatsapp_direct_link/app/core/error/failure.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/data/datasources/whatsapp_link_local_datasource.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/data/models/link_historic_model.dart';
 import '../../../../../helpers/test_helpers.mocks.dart';
@@ -104,6 +103,47 @@ void main() {
           .thenThrow(CacheException());
       //act
       function() async => await dataSource.all();
+      //assert
+      expect(function, throwsA(isInstanceOf<CacheException>()));
+    });
+  });
+
+  group('deleteAllWhatsAppLink', () {
+    test('should return true if the key exists and the removal is successful.',
+        () async {
+      //arrange
+      when(mockSharedPreferences.containsKey(CACHE_LINK_HISTORIC))
+          .thenAnswer((_) => true);
+
+      when(mockSharedPreferences.remove(CACHE_LINK_HISTORIC))
+          .thenAnswer((_) async => true);
+      //act
+      final result = await dataSource.removeAll();
+      //assert
+      verify(mockSharedPreferences.containsKey(CACHE_LINK_HISTORIC));
+      verify(mockSharedPreferences.remove(CACHE_LINK_HISTORIC));
+      expect(result, equals(true));
+    });
+
+    test('should return false if key does not exist.',
+        () async {
+      //arrange
+      when(mockSharedPreferences.containsKey(CACHE_LINK_HISTORIC))
+          .thenAnswer((_) => false);
+      //act
+      final result = await dataSource.removeAll();
+      //assert
+      verify(mockSharedPreferences.containsKey(CACHE_LINK_HISTORIC));
+      expect(result, equals(false));
+    });
+
+     test('should return a failure if there was an error removing everything',
+        () async {
+      //arrange
+      when(mockSharedPreferences.containsKey(CACHE_LINK_HISTORIC))
+          .thenThrow((_) => CacheException());
+      //act
+      function() async =>  await dataSource.removeAll();
       //assert
       expect(function, throwsA(isInstanceOf<CacheException>()));
     });

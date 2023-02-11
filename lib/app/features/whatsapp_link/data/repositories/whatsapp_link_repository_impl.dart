@@ -16,7 +16,8 @@ class WhatsappLinkRepositoryImpl extends WhatsappLinkRepository {
   Future<Either<Failure, String>> getLinkDirect(
       {required WhatsappLink whatsappLink}) async {
     try {
-      final url = "$URL_BASE_WHATSAPP/phone=55${whatsappLink.phone.getValue}&text=${whatsappLink.message.getValue}";
+      final url =
+          "$URL_BASE_WHATSAPP/phone=55${whatsappLink.phone.getValue}&text=${whatsappLink.message.getValue}";
       await dataSource.save(url);
       return Right(url);
     } on CacheException {
@@ -28,6 +29,15 @@ class WhatsappLinkRepositoryImpl extends WhatsappLinkRepository {
   Future<Either<Failure, List<LinkHistoric>>> getHistoric() async {
     try {
       return Right(await dataSource.all()!);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>>? removeAll() async {
+    try {
+      return Right(await dataSource.removeAll()!);
     } on CacheException {
       return Left(CacheFailure());
     }

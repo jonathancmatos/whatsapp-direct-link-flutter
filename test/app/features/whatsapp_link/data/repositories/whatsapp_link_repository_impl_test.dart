@@ -10,7 +10,6 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/value_obj
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/value_objects/phone_vo.dart';
 import '../../../../../helpers/test_helpers.mocks.dart';
 
-
 void main() {
   const String url = "https://wa.me/phone=5561969771824&text=test+params";
   late MockWhatsappLinkLocalDataSource mockLocalDataSource;
@@ -21,7 +20,11 @@ void main() {
   setUp(() {
     mockLocalDataSource = MockWhatsappLinkLocalDataSource();
     repositoryImpl = WhatsappLinkRepositoryImpl(mockLocalDataSource);
-    linkHistoricModel = [LinkHistoricModel(url: "https://wa.me/phone=5588992945488&text=teste", createdAt: DateTime.now())];
+    linkHistoricModel = [
+      LinkHistoricModel(
+          url: "https://wa.me/phone=5588992945488&text=teste",
+          createdAt: DateTime.now())
+    ];
   });
 
   group('saveWhatsAppLink', () {
@@ -63,7 +66,8 @@ void main() {
   group('allWhatsAppLink', () {
     test('should return a whatsApp link list', () async {
       //arrange
-      when(mockLocalDataSource.all()).thenAnswer((_) async => linkHistoricModel);
+      when(mockLocalDataSource.all())
+          .thenAnswer((_) async => linkHistoricModel);
       //act
       final result = await repositoryImpl.getHistoric();
       //assert
@@ -80,6 +84,30 @@ void main() {
       final result = await repositoryImpl.getHistoric();
       //assert
       verify(mockLocalDataSource.all());
+      expect(result, left(CacheFailure()));
+    });
+  });
+
+  group('deleteAllAppLink', () {
+    test('should return true when removing the whole list', () async {
+      //arrange
+      when(mockLocalDataSource.removeAll())
+          .thenAnswer((_) async => await Future.value(true));
+      //act
+      final result = await repositoryImpl.removeAll();
+      //assert
+      verify(mockLocalDataSource.removeAll());
+      expect(result, equals(const Right(true)));
+    });
+
+    test('should return a failure when trying to remove the entire list', () async {
+      //arrange
+      when(mockLocalDataSource.removeAll())
+          .thenThrow(CacheException());
+      //act
+      final result = await repositoryImpl.removeAll();
+      //assert
+      verify(mockLocalDataSource.removeAll());
       expect(result, left(CacheFailure()));
     });
   });
