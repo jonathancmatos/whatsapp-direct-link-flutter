@@ -7,6 +7,7 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/value_obj
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/states/whatsapp_link_state.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/states/whatsapp_link_store.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/pages/whatsapp_link/widgets/load_button_widget.dart';
+import 'package:mask_input_formatter/mask_input_formatter.dart';
 
 class FormWidget extends StatefulWidget {
   const FormWidget({super.key});
@@ -18,6 +19,7 @@ class FormWidget extends StatefulWidget {
 class _FormWidgetState extends State<FormWidget> {
   final controller = Modular.get<WhatsappLinkStore>();
   final formKey = GlobalKey<FormState>();
+  late MaskInputFormatter inputPhoneMask;
 
   final phoneVO = PhoneVO();
   final messageVO = MessageVO();
@@ -25,12 +27,12 @@ class _FormWidgetState extends State<FormWidget> {
   @override
   void initState() {
     super.initState();
+    inputPhoneMask = MaskInputFormatter(mask: "(##) #.####-####");
     controller.addListener(() {
-       if (controller.value is SuccessWhatsappLinkState) {
+      if (controller.value is SuccessWhatsappLinkState) {
         formKey.currentState?.reset();
         final url = (controller.value as SuccessWhatsappLinkState).url;
         Modular.to.pushNamed('/result/', arguments: url);
-      
       } else if (controller.value is ErrorWhatsappLinkState) {
         final message = (controller.value as ErrorWhatsappLinkState).message;
         Fluttertoast.showToast(msg: message);
@@ -56,8 +58,8 @@ class _FormWidgetState extends State<FormWidget> {
                     decoration: const InputDecoration(
                       hintText: "(00) 0.0000-000",
                     ),
-                    validator: (v) =>
-                        phoneVO.validate().fold((l) => l, (r) => null),
+                    inputFormatters: [inputPhoneMask],
+                    validator: (v) => phoneVO.validate().fold((l) => l, (r) => null),
                     onSaved: (v) => phoneVO.setValue = v ?? "",
                   ),
                   const SizedBox(height: 20),
@@ -74,10 +76,12 @@ class _FormWidgetState extends State<FormWidget> {
                     onSaved: (v) => messageVO.setValue = v,
                   ),
                   const SizedBox(height: 45),
-                   /** Button Link Generate */
+                  /** Button Link Generate */
                   ElevatedButton(
                     onPressed: !isLoading ? generateLinkWhatsapp : null,
-                    child: !isLoading ? const Text("GERAR LINK") : const LoadButtonWidget(),
+                    child: !isLoading
+                        ? const Text("GERAR LINK")
+                        : const LoadButtonWidget(),
                   )
                 ]),
           );
@@ -88,8 +92,7 @@ class _FormWidgetState extends State<FormWidget> {
     formKey.currentState?.save();
     if (formKey.currentState!.validate()) {
       await controller.getUrlGenerate(
-          whatsappLink: WhatsappLink(phone: phoneVO, message: messageVO
-      ));
+          whatsappLink: WhatsappLink(phone: phoneVO, message: messageVO));
     }
   }
 }

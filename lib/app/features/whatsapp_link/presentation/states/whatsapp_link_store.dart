@@ -17,7 +17,7 @@ class WhatsappLinkStore extends ValueNotifier<WhatsappLinkState> {
       (s) async{
         value = LoadingWhatsappLinkState();
         final failureOrUrl = await getWhatsappDirectLink(whatsappLink);
-        failureOrUrl.fold(
+        failureOrUrl?.fold(
           (f) => value = ErrorWhatsappLinkState("Não foi possivel guardar os dados localmente."), 
           (s) => value = SuccessWhatsappLinkState(s)
         );

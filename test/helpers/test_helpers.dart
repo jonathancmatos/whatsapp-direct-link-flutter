@@ -4,6 +4,7 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/data/models/link
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/link_historic.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/whatsapp_link.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/repositories/whatsapp_link_repository.dart';
+import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_historic_whatsapp_link.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_whatsapp_direct_link.dart';
 import 'package:mockito/annotations.dart';
 
@@ -12,7 +13,8 @@ import 'package:mockito/annotations.dart';
   WhatsappLinkRepository,
   WhatsappLinkLocalDataSource,
   SharedPreferences,
-  GetWhatsappDirectLink
+  GetWhatsappDirectLink,
+  GetHistoricWhatsAppLink
 ])
 
 void main() {}

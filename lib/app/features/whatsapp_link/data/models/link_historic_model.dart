@@ -9,14 +9,14 @@ class LinkHistoricModel extends LinkHistoric {
   factory LinkHistoricModel.fromJson(Map<String, dynamic> json) {
     return LinkHistoricModel(
       url: json["url"],
-      createdAt: json["created_at"],
+      createdAt: DateTime.parse(json["created_at"]),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       "url": url,
-      "created_at": DateFormat("dd/MM/yyy hh:mm").format(createdAt),
+      "created_at": DateFormat("yyyy-MM-dd hh:mm").format(createdAt),
     };
   }
 
