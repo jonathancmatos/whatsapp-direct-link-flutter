@@ -36,7 +36,8 @@ class FormResultWidget extends StatelessWidget {
         /** Button Copy **/
         ElevatedButton(
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(const Color(0xff9C9C9C))),
+              backgroundColor:
+                  MaterialStateProperty.all(const Color(0xff9C9C9C))),
           onPressed: copyUrl,
           child: const Text("COPIAR LINK"),
         ),
@@ -56,7 +57,10 @@ class FormResultWidget extends StatelessWidget {
   }
 
   void openUrl() async {
-    if (!await launchUrl(Uri.parse(url))) {
+    //whatsapp://send?phone=61969771824&text=test+params
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
       Fluttertoast.showToast(msg: "Não foi possível abrir o link.");
     }
   }

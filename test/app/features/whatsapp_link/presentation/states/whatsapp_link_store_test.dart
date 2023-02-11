@@ -11,7 +11,7 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/sta
 import '../../../../../helpers/test_helpers.mocks.dart';
 
 void main() {
-  const String url = "https://api.whatsapp.com/send?phone=61969771824&text=test+params";
+  const String url = "https://wa.me/phone=61969771824?text=test+params";
 
   late WhatsappLinkStore store;
   late MockGetWhatsappDirectLink mockGetWhatsappDirectLink;
