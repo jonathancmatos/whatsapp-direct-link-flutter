@@ -59,7 +59,7 @@ void main() {
       when(mockSharedPreferences.setString(CACHE_LINK_HISTORIC, any))
           .thenThrow(CacheException());
       //act
-      function () async => await dataSource.save(url);
+      function() async => await dataSource.save(url);
       //assert
       expect(function, throwsA(isInstanceOf<CacheException>()));
     });
@@ -82,8 +82,8 @@ void main() {
     test('should return a history list when a key exists', () async {
       //arrange
       final response = (json.decode(fixture("whatsapp_link.json")) as List)
-        .map((v) => LinkHistoricModel.fromJson(v))
-        .toList();
+          .map((v) => LinkHistoricModel.fromJson(v))
+          .toList();
 
       when(mockSharedPreferences.containsKey(CACHE_LINK_HISTORIC))
           .thenAnswer((_) => true);
@@ -94,6 +94,18 @@ void main() {
       //assert
       verify(mockSharedPreferences.getString(CACHE_LINK_HISTORIC));
       expect(result, equals(response));
+    });
+
+    test('should return a failure when trying to list the data', () async {
+      //arrange
+      when(mockSharedPreferences.containsKey(CACHE_LINK_HISTORIC))
+          .thenAnswer((_) => true);
+      when(mockSharedPreferences.getString(CACHE_LINK_HISTORIC))
+          .thenThrow(CacheException());
+      //act
+      function() async => await dataSource.all();
+      //assert
+      expect(function, throwsA(isInstanceOf<CacheException>()));
     });
   });
 }

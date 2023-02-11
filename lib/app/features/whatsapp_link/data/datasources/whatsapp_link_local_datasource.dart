@@ -34,7 +34,6 @@ class WhatsappLinkLocalDataSourceImpl implements WhatsappLinkLocalDataSource {
             CACHE_LINK_HISTORIC, json.encode(historicList));
       }
     } catch (e) {
-      print(e.toString());
       throw CacheException();
     }
   }
