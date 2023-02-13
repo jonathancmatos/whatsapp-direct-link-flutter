@@ -88,6 +88,29 @@ void main() {
     });
   });
 
+  group('deleteItemAppLink', () {
+    const index = 1;
+    test('should return true when removeing the item list', () async {
+      //arrange
+      when(mockLocalDataSource.remove(index)).thenAnswer((_) async => true);
+      //act
+      final result = await repositoryImpl.remove(index: index);
+      //assert
+      verify(mockLocalDataSource.remove(index));
+      expect(result, equals(const Right(true)));
+    });
+
+    test('should return failure when removeing the item list', () async {
+      //arrange
+      when(mockLocalDataSource.remove(index)).thenThrow(CacheException());
+      //act
+      final result = await repositoryImpl.remove(index: index);
+      //assert
+      verify(mockLocalDataSource.remove(index));
+      expect(result, left(CacheFailure()));
+    });
+  });
+
   group('deleteAllAppLink', () {
     test('should return true when removing the whole list', () async {
       //arrange
@@ -100,10 +123,10 @@ void main() {
       expect(result, equals(const Right(true)));
     });
 
-    test('should return a failure when trying to remove the entire list', () async {
+    test('should return a failure when trying to remove the entire list',
+        () async {
       //arrange
-      when(mockLocalDataSource.removeAll())
-          .thenThrow(CacheException());
+      when(mockLocalDataSource.removeAll()).thenThrow(CacheException());
       //act
       final result = await repositoryImpl.removeAll();
       //assert

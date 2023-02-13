@@ -34,6 +34,15 @@ class WhatsappLinkRepositoryImpl extends WhatsappLinkRepository {
     }
   }
 
+ @override
+  Future<Either<Failure, bool>>? remove({required int index}) async{
+    try {
+      return Right(await dataSource.remove(index)!);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
+  }
+
   @override
   Future<Either<Failure, bool>>? removeAll() async {
     try {
@@ -42,4 +51,5 @@ class WhatsappLinkRepositoryImpl extends WhatsappLinkRepository {
       return Left(CacheFailure());
     }
   }
+
 }
