@@ -5,6 +5,7 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/whatsapp_link.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/repositories/whatsapp_link_repository.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/delete_historic_all.dart';
+import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/delete_historic_item.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_historic_whatsapp_link.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_whatsapp_direct_link.dart';
 import 'package:mockito/annotations.dart';
@@ -14,9 +15,10 @@ import 'package:mockito/annotations.dart';
   WhatsappLinkRepository,
   WhatsappLinkLocalDataSource,
   SharedPreferences,
-  DeleteHistoricAll,
   GetWhatsappDirectLink,
-  GetHistoricWhatsAppLink
+  GetHistoricWhatsAppLink,
+  DeleteHistoricAll,
+  DeleteHistoricItem
 ])
 
 void main() {}

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/whatsapp_link.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_whatsapp_direct_link.dart';
-import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/states/whatsapp_link_state.dart';
+import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/pages/whatsapp_link/states/whatsapp_link_state.dart';
 
 class WhatsappLinkStore extends ValueNotifier<WhatsappLinkState> {
   final GetWhatsappDirectLink getWhatsappDirectLink;
