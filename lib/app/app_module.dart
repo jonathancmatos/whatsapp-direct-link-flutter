@@ -12,23 +12,25 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/pag
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/pages/result_url/result_url_page.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/pages/whatsapp_link/whatsapp_link_page.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/pages/whatsapp_link/states/whatsapp_link_store.dart';
+import 'package:whatsapp_direct_link/app/shared/confirmations/confirmation_dialog_impl.dart';
+import 'package:whatsapp_direct_link/main.dart';
 
-class AppModule extends Module{
-  
+class AppModule extends Module {
+
   @override
   List<Bind> get binds => [
     Bind((i) => WhatsappLinkStore(i())),
     Bind((i) => GetWhatsappDirectLink(i())),
-
     Bind((i) => HistoricStore(
-      getHistoricWhatsAppLink: i(), 
-      deleteHistoricAll: i(), 
-      deleteHistoricItem: i()
+      getHistoricWhatsAppLink: i(),
+      deleteHistoricAll: i(),
+      deleteHistoricItem: i(),
+      confirmationDialog: i()
     )),
+    Bind((i) => ConfirmationDialogImpl(globalKeyNavigator.currentState!.context)),
     Bind((i) => GetHistoricWhatsAppLink(i())),
     Bind((i) => DeleteHistoricAll(i())),
     Bind((i) => DeleteHistoricItem(i())),
-    
     Bind((i) => WhatsappLinkRepositoryImpl(i())),
     Bind((i) => WhatsappLinkLocalDataSourceImpl(i())),
     AsyncBind<SharedPreferences>((i) => SharedPreferences.getInstance())
@@ -36,11 +38,12 @@ class AppModule extends Module{
 
   @override
   List<ModularRoute> get routes => [
-    ChildRoute('/', child: (context, args) => const WhatsappLinkPage(), guards: [WhatsappLinkGuard()]),
-    ChildRoute('/result/', child: (context, args) => ResultUrlPage(url: args.data)),
-    ChildRoute('/historic/', child: (context, args) => HistoricLinkPage())
+    ChildRoute('/',
+      child: (context, args) => const WhatsappLinkPage(),
+      guards: [WhatsappLinkGuard()]),
+    ChildRoute('/result/',
+      child: (context, args) => ResultUrlPage(url: args.data)),
+    ChildRoute('/historic/',
+      child: (context, args) => const HistoricLinkPage())
   ];
-
 }
-
-

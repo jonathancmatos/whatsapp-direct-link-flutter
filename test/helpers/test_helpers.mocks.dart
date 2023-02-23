@@ -26,6 +26,8 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases
     as _i10;
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_whatsapp_direct_link.dart'
     as _i9;
+import 'package:whatsapp_direct_link/app/shared/confirmations/confirmation_dialog.dart'
+    as _i15;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -376,4 +378,23 @@ class MockDeleteHistoricItem extends _i1.Mock
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, bool?>?>.value(),
       ) as _i3.Future<_i4.Either<_i5.Failure, bool?>?>);
+}
+
+/// A class which mocks [ConfirmationDialog].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockConfirmationDialog extends _i1.Mock
+    implements _i15.ConfirmationDialog {
+  MockConfirmationDialog() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<bool?> show() => (super.noSuchMethod(
+        Invocation.method(
+          #show,
+          [],
+        ),
+        returnValue: _i3.Future<bool?>.value(),
+      ) as _i3.Future<bool?>);
 }

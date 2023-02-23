@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/mockito.dart';
@@ -18,15 +17,18 @@ void main() {
   late MockGetHistoricWhatsAppLink mockGetHistoricWhatsAppLink;
   late MockDeleteHistoricAll mockDeleteHistoricAll;
   late MockDeleteHistoricItem mockDeleteHistoricItem;
+  late MockConfirmationDialog mockConfirmationDialog;
 
   setUp(() {
     mockGetHistoricWhatsAppLink = MockGetHistoricWhatsAppLink();
     mockDeleteHistoricAll = MockDeleteHistoricAll();
     mockDeleteHistoricItem = MockDeleteHistoricItem();
+    mockConfirmationDialog = MockConfirmationDialog();
     store = HistoricStore(
         getHistoricWhatsAppLink: mockGetHistoricWhatsAppLink,
         deleteHistoricAll: mockDeleteHistoricAll,
-        deleteHistoricItem: mockDeleteHistoricItem);
+        deleteHistoricItem: mockDeleteHistoricItem,
+        confirmationDialog: mockConfirmationDialog);
 
     historics = (json.decode(fixture("whatsapp_link.json")) as List)
         .map((e) => LinkHistoricModel.fromJson(e))
@@ -38,43 +40,87 @@ void main() {
     expect(store.value, isA<InitialHistoricState>());
   });
 
-  test('should get list of historic from the user case', () async {
-    //arrange
-    when(mockGetHistoricWhatsAppLink(any))
-        .thenAnswer((_) async => Right(historics));
-    //act
-    await store.getHistoric();
-    //assert
-    expect(store.value, isA<SuccessHistoricState>());
+  group("getAll", () {
+    test('should get list of historic from the user case', () async {
+      //arrange
+      when(mockGetHistoricWhatsAppLink(any))
+          .thenAnswer((_) async => Right(historics));
+      //act
+      await store.getHistoric();
+      //assert
+      expect(store.value, isA<SuccessHistoricState>());
+    });
+
+    test('should emit [loading, success] when data is gotten success',
+        () async {
+      //arrange
+      when(mockGetHistoricWhatsAppLink(any))
+          .thenAnswer((_) async => Right(historics));
+      //assert Later
+      final expected = [
+        isA<LoadingHistoricState>(),
+        isA<SuccessHistoricState>(),
+      ];
+      expect(store, emitValues(expected));
+      //act
+      await store.getHistoric();
+    });
+
+    test('should emit [loading, error] when cache data fails', () async {
+      //arrange
+      when(mockGetHistoricWhatsAppLink(any))
+          .thenAnswer((_) async => Left(CacheFailure()));
+
+      //assert Later
+      final expected = [
+        isA<LoadingHistoricState>(),
+        isA<ErrorHistoricState>(),
+      ];
+      expect(store, emitValues(expected));
+
+      //act
+      await store.getHistoric();
+    });
   });
 
-  test('should emit [loading, success] when data is gotten success', () async {
-    //arrange
-    when(mockGetHistoricWhatsAppLink(any))
-        .thenAnswer((_) async => Right(historics));
-    //assert Later
-    final expected = [
-      isA<LoadingHistoricState>(),
-      isA<SuccessHistoricState>(),
-    ];
-    expect(store, emitValues(expected));
-    //act
-    await store.getHistoric();
-  });
+  group("deleteAll", () {
+    test('should removed all list of historic from the user case', () async {
+      //arrange
+      when(mockConfirmationDialog.show())
+          .thenAnswer((_) async => true);
+      when(mockDeleteHistoricAll(any))
+          .thenAnswer((_) async => const Right(true));
+      //act
+      await store.removeAll();
+      //assert
+      expect(store.value, isA<SuccessHistoricState>());
+    });
 
-  test('should emit [loading, error] when cache data fails', () async {
-    //arrange
-    when(mockGetHistoricWhatsAppLink(any))
-        .thenAnswer((_) async => Left(CacheFailure()));
+    test("should call nothing if dialog returns false", () async {
+      //arrange
+      when(mockConfirmationDialog.show())
+          .thenAnswer((_) async => false);
+      when(mockDeleteHistoricAll(any))
+          .thenAnswer((_) async => const Right(true));
+      //act
+      await store.removeAll();
+      //assert
+      verifyZeroInteractions(MockDeleteHistoricAll());
+    });
 
-    //assert Later
-    final expected = [
-      isA<LoadingHistoricState>(),
-      isA<ErrorHistoricState>(),
-    ];
-    expect(store, emitValues(expected));
-
-    //act
-    await store.getHistoric();
+    test('should throw error when data removal fails', () async {
+      //arrange
+      when(mockConfirmationDialog.show())
+          .thenAnswer((_) async => true);
+      when(mockDeleteHistoricAll(any))
+          .thenAnswer((_) async => Left(CacheFailure()));
+      //assert Later
+      final expected = [
+        isA<ErrorHistoricState>(),
+      ];
+      expect(store, emitValues(expected));
+      //act
+      await store.removeAll();
+    });
   });
 }

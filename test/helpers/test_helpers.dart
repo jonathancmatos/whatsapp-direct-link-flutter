@@ -9,6 +9,7 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_historic_whatsapp_link.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_whatsapp_direct_link.dart';
 import 'package:mockito/annotations.dart';
+import 'package:whatsapp_direct_link/app/shared/confirmations/confirmation_dialog.dart';
 
 
 @GenerateMocks([
@@ -18,7 +19,8 @@ import 'package:mockito/annotations.dart';
   GetWhatsappDirectLink,
   GetHistoricWhatsAppLink,
   DeleteHistoricAll,
-  DeleteHistoricItem
+  DeleteHistoricItem,
+  ConfirmationDialog
 ])
 
 void main() {}
