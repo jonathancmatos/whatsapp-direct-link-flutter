@@ -1,9 +1,7 @@
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/link_historic.dart';
+import 'package:whatsapp_direct_link/app/shared/actions/url_actions.dart';
 import '../states/historic_store.dart';
 
 class ModalOptionsListWidget extends StatelessWidget {
@@ -36,7 +34,7 @@ class ModalOptionsListWidget extends StatelessWidget {
           ListTile(
             textColor: Colors.black,
             iconColor: Colors.black,
-            onTap: copyUrl,
+            onTap: () => copyUrl(historic.url),
             leading: const Icon(Icons.copy),
             title: const Text("Copiar Link"),
           ),
@@ -45,7 +43,7 @@ class ModalOptionsListWidget extends StatelessWidget {
           ListTile(
             textColor: Colors.black,
             iconColor: Colors.black,
-            onTap: openUrl,
+            onTap: () => openUrl(historic.url),
             leading: const Icon(Icons.whatsapp),
             title: const Text("Abrir no WhatsApp"),
           ),
@@ -64,19 +62,5 @@ class ModalOptionsListWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void copyUrl() {
-    FlutterClipboard.copy(historic.url)
-        .then((value) => Fluttertoast.showToast(msg: "Url copiada."));
-  }
-
-  void openUrl() async {
-    //whatsapp://send?phone=61969771824&text=test+params
-    if (await canLaunch(historic.url)) {
-      await launch(historic.url);
-    } else {
-      Fluttertoast.showToast(msg: "Não foi possível abrir o link.");
-    }
   }
 }
