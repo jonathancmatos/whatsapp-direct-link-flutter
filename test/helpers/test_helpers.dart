@@ -4,9 +4,12 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/data/models/link
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/link_historic.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/whatsapp_link.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/repositories/whatsapp_link_repository.dart';
+import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/delete_historic_all.dart';
+import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/delete_historic_item.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_historic_whatsapp_link.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_whatsapp_direct_link.dart';
 import 'package:mockito/annotations.dart';
+import 'package:whatsapp_direct_link/app/shared/confirmations/confirmation_dialog.dart';
 
 
 @GenerateMocks([
@@ -14,7 +17,10 @@ import 'package:mockito/annotations.dart';
   WhatsappLinkLocalDataSource,
   SharedPreferences,
   GetWhatsappDirectLink,
-  GetHistoricWhatsAppLink
+  GetHistoricWhatsAppLink,
+  DeleteHistoricAll,
+  DeleteHistoricItem,
+  ConfirmationDialog
 ])
 
 void main() {}

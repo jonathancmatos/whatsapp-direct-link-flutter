@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'widgets/widgets.dart';
 
 class WhatsappLinkPage extends StatelessWidget {
@@ -9,11 +10,11 @@ class WhatsappLinkPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("WhatsApp Link"),
-        actions: const [
-          // IconButton(
-          //   onPressed: () {}, 
-          //   icon: const Icon(Icons.restore),
-          // )
+        actions: [
+          IconButton(
+            onPressed: () => Modular.to.pushNamed('/historic/'),
+            icon: const Icon(Icons.restore),
+          )
         ],
       ),
       body: Center(

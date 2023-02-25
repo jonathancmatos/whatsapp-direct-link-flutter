@@ -3,20 +3,31 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i3;
 
-import 'package:fpdart/fpdart.dart' as _i2;
+import 'package:fpdart/fpdart.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:shared_preferences/shared_preferences.dart' as _i8;
 import 'package:whatsapp_direct_link/app/core/error/failure.dart' as _i5;
+import 'package:whatsapp_direct_link/app/core/usercases/usercase.dart' as _i12;
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/data/datasources/whatsapp_link_local_datasource.dart'
     as _i7;
+import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/link_historic.dart'
+    as _i11;
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/whatsapp_link.dart'
     as _i6;
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/repositories/whatsapp_link_repository.dart'
-    as _i3;
+    as _i2;
+import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/delete_historic_all.dart'
+    as _i13;
+import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/delete_historic_item.dart'
+    as _i14;
+import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_historic_whatsapp_link.dart'
+    as _i10;
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/get_whatsapp_direct_link.dart'
     as _i9;
+import 'package:whatsapp_direct_link/app/shared/confirmations/confirmation_dialog.dart'
+    as _i15;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -29,19 +40,9 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeEither_0<L, R> extends _i1.SmartFake implements _i2.Either<L, R> {
-  _FakeEither_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeWhatsappLinkRepository_1 extends _i1.SmartFake
-    implements _i3.WhatsappLinkRepository {
-  _FakeWhatsappLinkRepository_1(
+class _FakeWhatsappLinkRepository_0 extends _i1.SmartFake
+    implements _i2.WhatsappLinkRepository {
+  _FakeWhatsappLinkRepository_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -54,30 +55,26 @@ class _FakeWhatsappLinkRepository_1 extends _i1.SmartFake
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockWhatsappLinkRepository extends _i1.Mock
-    implements _i3.WhatsappLinkRepository {
+    implements _i2.WhatsappLinkRepository {
   MockWhatsappLinkRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, String>> getLinkDirect(
+  _i3.Future<_i4.Either<_i5.Failure, String>>? getLinkDirect(
           {required _i6.WhatsappLink? whatsappLink}) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getLinkDirect,
-          [],
-          {#whatsappLink: whatsappLink},
-        ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, String>>.value(
-            _FakeEither_0<_i5.Failure, String>(
-          this,
-          Invocation.method(
-            #getLinkDirect,
-            [],
-            {#whatsappLink: whatsappLink},
-          ),
-        )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, String>>);
+      (super.noSuchMethod(Invocation.method(
+        #getLinkDirect,
+        [],
+        {#whatsappLink: whatsappLink},
+      )) as _i3.Future<_i4.Either<_i5.Failure, String>>?);
+  @override
+  _i3.Future<_i4.Either<_i5.Failure, bool>>? remove({required int? index}) =>
+      (super.noSuchMethod(Invocation.method(
+        #remove,
+        [],
+        {#index: index},
+      )) as _i3.Future<_i4.Either<_i5.Failure, bool>>?);
 }
 
 /// A class which mocks [WhatsappLinkLocalDataSource].
@@ -90,14 +87,19 @@ class MockWhatsappLinkLocalDataSource extends _i1.Mock
   }
 
   @override
-  _i4.Future<void> save(String? url) => (super.noSuchMethod(
+  _i3.Future<void> save(String? url) => (super.noSuchMethod(
         Invocation.method(
           #save,
           [url],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
+  @override
+  _i3.Future<bool>? remove(int? index) => (super.noSuchMethod(Invocation.method(
+        #remove,
+        [index],
+      )) as _i3.Future<bool>?);
 }
 
 /// A class which mocks [SharedPreferences].
@@ -156,7 +158,7 @@ class MockSharedPreferences extends _i1.Mock implements _i8.SharedPreferences {
         [key],
       )) as List<String>?);
   @override
-  _i4.Future<bool> setBool(
+  _i3.Future<bool> setBool(
     String? key,
     bool? value,
   ) =>
@@ -168,10 +170,10 @@ class MockSharedPreferences extends _i1.Mock implements _i8.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
   @override
-  _i4.Future<bool> setInt(
+  _i3.Future<bool> setInt(
     String? key,
     int? value,
   ) =>
@@ -183,10 +185,10 @@ class MockSharedPreferences extends _i1.Mock implements _i8.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
   @override
-  _i4.Future<bool> setDouble(
+  _i3.Future<bool> setDouble(
     String? key,
     double? value,
   ) =>
@@ -198,10 +200,10 @@ class MockSharedPreferences extends _i1.Mock implements _i8.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
   @override
-  _i4.Future<bool> setString(
+  _i3.Future<bool> setString(
     String? key,
     String? value,
   ) =>
@@ -213,10 +215,10 @@ class MockSharedPreferences extends _i1.Mock implements _i8.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
   @override
-  _i4.Future<bool> setStringList(
+  _i3.Future<bool> setStringList(
     String? key,
     List<String>? value,
   ) =>
@@ -228,41 +230,41 @@ class MockSharedPreferences extends _i1.Mock implements _i8.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
   @override
-  _i4.Future<bool> remove(String? key) => (super.noSuchMethod(
+  _i3.Future<bool> remove(String? key) => (super.noSuchMethod(
         Invocation.method(
           #remove,
           [key],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
   @override
-  _i4.Future<bool> commit() => (super.noSuchMethod(
+  _i3.Future<bool> commit() => (super.noSuchMethod(
         Invocation.method(
           #commit,
           [],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
   @override
-  _i4.Future<bool> clear() => (super.noSuchMethod(
+  _i3.Future<bool> clear() => (super.noSuchMethod(
         Invocation.method(
           #clear,
           [],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
   @override
-  _i4.Future<void> reload() => (super.noSuchMethod(
+  _i3.Future<void> reload() => (super.noSuchMethod(
         Invocation.method(
           #reload,
           [],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }
 
 /// A class which mocks [GetWhatsappDirectLink].
@@ -275,27 +277,124 @@ class MockGetWhatsappDirectLink extends _i1.Mock
   }
 
   @override
-  _i3.WhatsappLinkRepository get repository => (super.noSuchMethod(
+  _i2.WhatsappLinkRepository get repository => (super.noSuchMethod(
         Invocation.getter(#repository),
-        returnValue: _FakeWhatsappLinkRepository_1(
+        returnValue: _FakeWhatsappLinkRepository_0(
           this,
           Invocation.getter(#repository),
         ),
-      ) as _i3.WhatsappLinkRepository);
+      ) as _i2.WhatsappLinkRepository);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, String>> call(_i6.WhatsappLink? params) =>
+  _i3.Future<_i4.Either<_i5.Failure, String>?> call(_i6.WhatsappLink? params) =>
       (super.noSuchMethod(
         Invocation.method(
           #call,
           [params],
         ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, String>>.value(
-            _FakeEither_0<_i5.Failure, String>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, String>?>.value(),
+      ) as _i3.Future<_i4.Either<_i5.Failure, String>?>);
+}
+
+/// A class which mocks [GetHistoricWhatsAppLink].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetHistoricWhatsAppLink extends _i1.Mock
+    implements _i10.GetHistoricWhatsAppLink {
+  MockGetHistoricWhatsAppLink() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.WhatsappLinkRepository get repository => (super.noSuchMethod(
+        Invocation.getter(#repository),
+        returnValue: _FakeWhatsappLinkRepository_0(
           this,
-          Invocation.method(
-            #call,
-            [params],
-          ),
-        )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, String>>);
+          Invocation.getter(#repository),
+        ),
+      ) as _i2.WhatsappLinkRepository);
+  @override
+  _i3.Future<_i4.Either<_i5.Failure, List<_i11.LinkHistoric>>?> call(
+          _i12.NoParams? params) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #call,
+          [params],
+        ),
+        returnValue: _i3
+            .Future<_i4.Either<_i5.Failure, List<_i11.LinkHistoric>>?>.value(),
+      ) as _i3.Future<_i4.Either<_i5.Failure, List<_i11.LinkHistoric>>?>);
+}
+
+/// A class which mocks [DeleteHistoricAll].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDeleteHistoricAll extends _i1.Mock implements _i13.DeleteHistoricAll {
+  MockDeleteHistoricAll() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.WhatsappLinkRepository get repository => (super.noSuchMethod(
+        Invocation.getter(#repository),
+        returnValue: _FakeWhatsappLinkRepository_0(
+          this,
+          Invocation.getter(#repository),
+        ),
+      ) as _i2.WhatsappLinkRepository);
+  @override
+  _i3.Future<_i4.Either<_i5.Failure, bool?>?> call(_i12.NoParams? params) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #call,
+          [params],
+        ),
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, bool?>?>.value(),
+      ) as _i3.Future<_i4.Either<_i5.Failure, bool?>?>);
+}
+
+/// A class which mocks [DeleteHistoricItem].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDeleteHistoricItem extends _i1.Mock
+    implements _i14.DeleteHistoricItem {
+  MockDeleteHistoricItem() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.WhatsappLinkRepository get repository => (super.noSuchMethod(
+        Invocation.getter(#repository),
+        returnValue: _FakeWhatsappLinkRepository_0(
+          this,
+          Invocation.getter(#repository),
+        ),
+      ) as _i2.WhatsappLinkRepository);
+  @override
+  _i3.Future<_i4.Either<_i5.Failure, bool?>?> call(int? params) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #call,
+          [params],
+        ),
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, bool?>?>.value(),
+      ) as _i3.Future<_i4.Either<_i5.Failure, bool?>?>);
+}
+
+/// A class which mocks [ConfirmationDialog].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockConfirmationDialog extends _i1.Mock
+    implements _i15.ConfirmationDialog {
+  MockConfirmationDialog() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<bool?> show() => (super.noSuchMethod(
+        Invocation.method(
+          #show,
+          [],
+        ),
+        returnValue: _i3.Future<bool?>.value(),
+      ) as _i3.Future<bool?>);
 }
