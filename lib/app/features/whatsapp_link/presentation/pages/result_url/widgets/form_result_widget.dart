@@ -1,7 +1,5 @@
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:whatsapp_direct_link/app/shared/actions/url_actions.dart';
 
 class FormResultWidget extends StatelessWidget {
   const FormResultWidget({super.key, required this.url});
@@ -36,32 +34,17 @@ class FormResultWidget extends StatelessWidget {
         /** Button Copy **/
         ElevatedButton(
           style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(const Color(0xff9C9C9C))),
-          onPressed: copyUrl,
+              backgroundColor: MaterialStateProperty.all(const Color(0xff9C9C9C))),
+          onPressed: () => copyUrl(url),
           child: const Text("COPIAR LINK"),
         ),
         const SizedBox(height: 24),
         /** Button Open **/
         ElevatedButton(
-          onPressed: openUrl,
+          onPressed: () => openUrl(url),
           child: const Text("ABRIR WHATSAPP"),
         ),
       ],
     );
-  }
-
-  void copyUrl() {
-    FlutterClipboard.copy(url)
-        .then((value) => Fluttertoast.showToast(msg: "Url copiada."));
-  }
-
-  void openUrl() async {
-    //whatsapp://send?phone=61969771824&text=test+params
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      Fluttertoast.showToast(msg: "Não foi possível abrir o link.");
-    }
   }
 }
