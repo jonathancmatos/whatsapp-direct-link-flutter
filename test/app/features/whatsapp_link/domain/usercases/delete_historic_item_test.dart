@@ -2,13 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/mockito.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/usercases/delete_historic_item.dart';
-
 import '../../../../../helpers/test_helpers.mocks.dart';
 
 void main() {
   late DeleteHistoricItem usercase;
   late MockWhatsappLinkRepository repository;
-  final index = 1;
+  const int index = 1;
 
   setUp(() {
     repository = MockWhatsappLinkRepository();
@@ -19,9 +18,9 @@ void main() {
       () async {
     //arrange
     when(repository.remove(index: index))
-        .thenAnswer((_) async => const Right(true));
+      .thenAnswer((_) async => const Right(true));
     //act
-    final result = await repository.remove(index: index);
+    final result = await usercase.call(index);
     //assert
     expect(result, equals(isA<Right>()));
     verify(repository.remove(index: index));

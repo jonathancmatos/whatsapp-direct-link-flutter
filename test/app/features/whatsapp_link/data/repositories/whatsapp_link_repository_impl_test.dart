@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/mockito.dart';
@@ -9,26 +10,27 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/value_objects/message_vo.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/value_objects/phone_vo.dart';
 import '../../../../../helpers/test_helpers.mocks.dart';
+import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  const String url = "https://wa.me/phone=5561969771824&text=test+params";
   late MockWhatsappLinkLocalDataSource mockLocalDataSource;
   late WhatsappLinkRepositoryImpl repositoryImpl;
-  late WhatsappLink whatsappLink;
-  late List<LinkHistoricModel> linkHistoricModel;
+  List<LinkHistoricModel> historics = [];
 
   setUp(() {
     mockLocalDataSource = MockWhatsappLinkLocalDataSource();
     repositoryImpl = WhatsappLinkRepositoryImpl(mockLocalDataSource);
-    linkHistoricModel = [
-      LinkHistoricModel(
-          url: "https://wa.me/phone=5588992945488&text=teste",
-          createdAt: DateTime.now())
-    ];
   });
 
+  void convertedJsonToListModel() {
+    final data = json.decode(fixture("whatsapp_link.json"));
+    historics =
+        (data as List).map((v) => LinkHistoricModel.fromJson(v)).toList();
+  }
+
   group('saveWhatsAppLink', () {
-    whatsappLink = WhatsappLink(
+    const String url = "https://wa.me/phone=5561969771824&text=test+params";
+    final whatsappLink = WhatsappLink(
         phone: PhoneVO()..setValue = "(61) 9.6977-1824",
         message: MessageVO()..setValue = "test params");
 
@@ -66,14 +68,14 @@ void main() {
   group('allWhatsAppLink', () {
     test('should return a whatsApp link list', () async {
       //arrange
-      when(mockLocalDataSource.all())
-          .thenAnswer((_) async => linkHistoricModel);
+      convertedJsonToListModel();
+      when(mockLocalDataSource.all()).thenAnswer((_) async => historics);
       //act
       final result = await repositoryImpl.getHistoric();
       //assert
       verify(mockLocalDataSource.all());
       expect(result, equals(isA<Right>()));
-      expect(result, equals(Right(linkHistoricModel)));
+      expect(result, equals(Right(historics)));
     });
 
     test('should return a failure when returning list of whatsApp Link',
@@ -90,6 +92,7 @@ void main() {
 
   group('deleteItemAppLink', () {
     const index = 1;
+
     test('should return true when removeing the item list', () async {
       //arrange
       when(mockLocalDataSource.remove(index)).thenAnswer((_) async => true);
