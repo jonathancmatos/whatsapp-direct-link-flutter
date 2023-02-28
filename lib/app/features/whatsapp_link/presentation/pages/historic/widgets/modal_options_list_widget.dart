@@ -5,11 +5,8 @@ import 'package:whatsapp_direct_link/app/shared/actions/url_actions.dart';
 import '../states/historic_store.dart';
 
 class ModalOptionsListWidget extends StatelessWidget {
-  ModalOptionsListWidget({
-    super.key, required 
-    this.historic, required this.index
-  });
-  
+  ModalOptionsListWidget({super.key, required this.historic, required this.index});
+
   final LinkHistoric historic;
   final int index;
 
@@ -25,21 +22,22 @@ class ModalOptionsListWidget extends StatelessWidget {
         children: [
           const SizedBox(height: 10),
           Text("Escolha uma opção",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline6
-                  ?.copyWith(fontWeight: FontWeight.bold)),
+            style: Theme.of(context).textTheme.headline6?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 16),
-
           ListTile(
             textColor: Colors.black,
             iconColor: Colors.black,
-            onTap: () => copyUrl(historic.url),
+            onTap: () {
+              Navigator.of(context).pop();
+              copyUrl(historic.url);
+            },
             leading: const Icon(Icons.copy),
             title: const Text("Copiar Link"),
           ),
           const Divider(height: 2),
-
           ListTile(
             textColor: Colors.black,
             iconColor: Colors.black,
@@ -48,7 +46,6 @@ class ModalOptionsListWidget extends StatelessWidget {
             title: const Text("Abrir no WhatsApp"),
           ),
           const Divider(height: 2),
-
           ListTile(
             textColor: Colors.red,
             iconColor: Colors.red,

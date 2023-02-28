@@ -7,6 +7,8 @@ import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/value_obj
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/value_objects/phone_vo.dart';
 import '../../../../../helpers/test_helpers.mocks.dart';
 
+const String URL_BASE_WHATSAPP = "https://wa.me";
+
 void main() {
   late GetWhatsappDirectLink usercase;
   late MockWhatsappLinkRepository repository;
@@ -16,14 +18,15 @@ void main() {
     repository = MockWhatsappLinkRepository();
     usercase = GetWhatsappDirectLink(repository);
     whatsappLink = WhatsappLink(
-        phone: PhoneVO()..setValue = "(61) 6977-1824",
+        phone: PhoneVO()..setValue = "(61) 9.6977-1824",
         message: MessageVO()..setValue = "test params");
   });
 
   test('should return a string straight from the repository.', () async {
     //arrange
+    final url = "$URL_BASE_WHATSAPP/phone=55${whatsappLink.phone.getValue}&text=${whatsappLink.message.getValue}";
     when(repository.getLinkDirect(whatsappLink: whatsappLink))
-        .thenAnswer((_) async => const Right("https://wa.me/"));
+        .thenAnswer((_) async => Right(url));
     //act
     var result = await usercase(whatsappLink);
     //assert

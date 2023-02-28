@@ -12,12 +12,13 @@ import '../../../../../../../helpers/test_helpers.mocks.dart';
 import '../../../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  late List<LinkHistoric> historics;
   late HistoricStore store;
   late MockGetHistoricWhatsAppLink mockGetHistoricWhatsAppLink;
   late MockDeleteHistoricAll mockDeleteHistoricAll;
   late MockDeleteHistoricItem mockDeleteHistoricItem;
   late MockConfirmationDialog mockConfirmationDialog;
+
+  List<LinkHistoric> historics = [];
 
   setUp(() {
     mockGetHistoricWhatsAppLink = MockGetHistoricWhatsAppLink();
@@ -29,11 +30,17 @@ void main() {
         deleteHistoricAll: mockDeleteHistoricAll,
         deleteHistoricItem: mockDeleteHistoricItem,
         confirmationDialog: mockConfirmationDialog);
-
-    historics = (json.decode(fixture("whatsapp_link.json")) as List)
-        .map((e) => LinkHistoricModel.fromJson(e))
-        .toList();
   });
+
+  void convertedJsonToListModel() {
+    final data = json.decode(fixture("whatsapp_link.json"));
+    historics =
+        (data as List).map((v) => LinkHistoricModel.fromJson(v)).toList();
+  }
+
+  void confirmationDialog(bool vallue) {
+    when(mockConfirmationDialog.show()).thenAnswer((_) async => vallue);
+  }
 
   test('initialState should be Initial', () {
     //assert
@@ -43,6 +50,7 @@ void main() {
   group("getAll", () {
     test('should get list of historic from the user case', () async {
       //arrange
+      convertedJsonToListModel();
       when(mockGetHistoricWhatsAppLink(any))
           .thenAnswer((_) async => Right(historics));
       //act
@@ -54,6 +62,7 @@ void main() {
     test('should emit [loading, success] when data is gotten success',
         () async {
       //arrange
+      convertedJsonToListModel();
       when(mockGetHistoricWhatsAppLink(any))
           .thenAnswer((_) async => Right(historics));
       //assert Later
@@ -84,34 +93,39 @@ void main() {
   });
 
   group("deleteItem", () {
+    const int index = 0;
+
     test("should removed item especific of historic from the user case",
         () async {
       //arrange
-      when(mockConfirmationDialog.show()).thenAnswer((_) async => true);
+      convertedJsonToListModel();
+      confirmationDialog(true);
       when(mockDeleteHistoricItem(any))
           .thenAnswer((_) async => const Right(true));
       //act
-      store.historics.add(LinkHistoric(url: "", createdAt: DateTime.now()));
-      await store.removeItem(index: 0);
+      store.historics.addAll(historics);
+      await store.removeItem(index: index);
       //assert
       expect(store.value, isA<SuccessHistoricState>());
     });
 
     test("should call nothing if dialog returns false", () async {
       //arrange
-      when(mockConfirmationDialog.show()).thenAnswer((_) async => false);
+      convertedJsonToListModel();
+      confirmationDialog(false);
       when(mockDeleteHistoricItem(any))
           .thenAnswer((_) async => const Right(true));
       //act
-      store.historics.add(LinkHistoric(url: "", createdAt: DateTime.now()));
-      await store.removeItem(index: 0);
+      store.historics.addAll(historics);
+      await store.removeItem(index: index);
       //assert
       verifyZeroInteractions(mockDeleteHistoricItem);
     });
 
     test('should throw error when remove per item fails', () async {
       //arrange
-      when(mockConfirmationDialog.show()).thenAnswer((_) async => true);
+      convertedJsonToListModel();
+      confirmationDialog(true);
       when(mockDeleteHistoricItem(any))
           .thenAnswer((_) async => Left(CacheFailure()));
       //assert Later
@@ -120,15 +134,15 @@ void main() {
       ];
       expect(store, emitValues(expected));
       //act
-      store.historics.add(LinkHistoric(url: "", createdAt: DateTime.now()));
-      await store.removeItem(index: 0);
+      store.historics.addAll(historics);
+      await store.removeItem(index: index);
     });
   });
 
   group("deleteAll", () {
     test('should removed all list of historic from the user case', () async {
       //arrange
-      when(mockConfirmationDialog.show()).thenAnswer((_) async => true);
+      confirmationDialog(true);
       when(mockDeleteHistoricAll(any))
           .thenAnswer((_) async => const Right(true));
       //act
@@ -139,7 +153,7 @@ void main() {
 
     test("should call nothing if dialog returns false", () async {
       //arrange
-      when(mockConfirmationDialog.show()).thenAnswer((_) async => false);
+      confirmationDialog(false);
       when(mockDeleteHistoricAll(any))
           .thenAnswer((_) async => const Right(true));
       //act
@@ -150,7 +164,7 @@ void main() {
 
     test('should throw error when data removal fails', () async {
       //arrange
-      when(mockConfirmationDialog.show()).thenAnswer((_) async => true);
+      confirmationDialog(true);
       when(mockDeleteHistoricAll(any))
           .thenAnswer((_) async => Left(CacheFailure()));
       //assert Later

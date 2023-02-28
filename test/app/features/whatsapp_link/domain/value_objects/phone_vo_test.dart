@@ -24,7 +24,7 @@ void main() {
     //act
     phoneVO.setValue = str;
     //assert
-    expect(phoneVO.validate(), equals(isNotNull));
+    expect(phoneVO.validate(),equals(isA<Right>()));
   });
 
   test('should return me a string if my phone is not valid.', () {

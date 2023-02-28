@@ -13,11 +13,9 @@ class WhatsappLinkRepositoryImpl extends WhatsappLinkRepository {
   WhatsappLinkRepositoryImpl(this.dataSource);
 
   @override
-  Future<Either<Failure, String>> getLinkDirect(
-      {required WhatsappLink whatsappLink}) async {
+  Future<Either<Failure, String>> getLinkDirect({required WhatsappLink whatsappLink}) async {
     try {
-      final url =
-          "$URL_BASE_WHATSAPP/phone=55${whatsappLink.phone.getValue}&text=${whatsappLink.message.getValue}";
+      final url = "$URL_BASE_WHATSAPP/phone=55${whatsappLink.phone.getValue}&text=${whatsappLink.message.getValue}";
       await dataSource.save(url);
       return Right(url);
     } on CacheException {
