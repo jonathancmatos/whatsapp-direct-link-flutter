@@ -16,25 +16,23 @@ class WhatsappLinkLocalDataSourceImpl implements WhatsappLinkLocalDataSource {
   final SharedPreferences sharedPreferences;
   WhatsappLinkLocalDataSourceImpl(this.sharedPreferences);
 
+  List<LinkHistoricModel> getHistorics() {
+    final values = sharedPreferences.getString(CACHE_LINK_HISTORIC);
+    if (values == null || values.isEmpty) return [];
+
+    return (json.decode(values) as List)
+        .map((v) => LinkHistoricModel.fromJson(v))
+        .toList();
+  }
+
   @override
   Future<void> save(String url) async {
     try {
       final model = LinkHistoricModel(url: url, createdAt: DateTime.now());
-      final values = sharedPreferences.getString(CACHE_LINK_HISTORIC);
-      List<LinkHistoricModel> historicList = [];
+      final historics = getHistorics();
 
-      if (values == null || values.isEmpty) {
-        historicList.add(model);
-        await sharedPreferences.setString(
-            CACHE_LINK_HISTORIC, json.encode(historicList));
-      } else {
-        historicList = (json.decode(values) as List)
-            .map((v) => LinkHistoricModel.fromJson(v))
-            .toList()
-          ..add(model);
-        await sharedPreferences.setString(
-            CACHE_LINK_HISTORIC, json.encode(historicList));
-      }
+      historics.add(model);
+      await sharedPreferences.setString(CACHE_LINK_HISTORIC, json.encode(historics));
     } catch (e) {
       throw CacheException();
     }
@@ -44,9 +42,7 @@ class WhatsappLinkLocalDataSourceImpl implements WhatsappLinkLocalDataSource {
   Future<List<LinkHistoricModel>> all() async {
     try {
       if (sharedPreferences.containsKey(CACHE_LINK_HISTORIC)) {
-        final data = sharedPreferences.getString(CACHE_LINK_HISTORIC);
-        final result = (json.decode(data!) as List);
-        return result.map((e) => LinkHistoricModel.fromJson(e)).toList();
+        return getHistorics();
       }
       return [];
     } catch (e) {
@@ -58,17 +54,13 @@ class WhatsappLinkLocalDataSourceImpl implements WhatsappLinkLocalDataSource {
   Future<bool>? remove(int index) async {
     try {
       if (!sharedPreferences.containsKey(CACHE_LINK_HISTORIC)) {
-        return false;
+        throw CacheException();
       }
-
-      final list =
-          json.decode(sharedPreferences.getString(CACHE_LINK_HISTORIC)!);
-      final data =
-          (list as List).map((v) => LinkHistoricModel.fromJson(v)).toList();
-
+      
+      final data = getHistorics();
       data.removeAt(index);
-      return await sharedPreferences.setString(
-          CACHE_LINK_HISTORIC, json.encode(data));
+
+      return await sharedPreferences.setString(CACHE_LINK_HISTORIC, json.encode(data));
     } catch (e) {
       throw CacheException();
     }

@@ -22,6 +22,7 @@ void main() {
     store = WhatsappLinkStore(mockGetWhatsappDirectLink);
   });
 
+
   void setValuesModelValid() => whatsappLink = WhatsappLink(
       phone: PhoneVO()..setValue = "(61) 9.6977-1824",
       message: MessageVO()..setValue = "test params");
@@ -29,6 +30,7 @@ void main() {
   void setValuesModelInvalid() => whatsappLink = WhatsappLink(
       phone: PhoneVO()..setValue = "(61) 6977-1824",
       message: MessageVO()..setValue = "test params");
+
 
   test('initialState should be Initial', () {
     //assert

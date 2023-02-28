@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:whatsapp_direct_link/app/features/whatsapp_link/domain/entities/link_historic.dart';
-import 'package:whatsapp_direct_link/app/features/whatsapp_link/presentation/pages/historic/widgets/modal_options_list_widget.dart';
+import 'widgets.dart';
 
 class ItemListHistoricWidget extends StatelessWidget {
   final LinkHistoric linkHistoric;

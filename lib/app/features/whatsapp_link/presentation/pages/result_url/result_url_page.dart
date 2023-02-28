@@ -13,16 +13,18 @@ class ResultUrlPage extends StatelessWidget {
         title: const Text("RESULTADO"),
       ),
       body: Center(
-          child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const TitleResultWidget(),
-                  const SizedBox(height: 42),
-                  FormResultWidget(url: url)
-                ],
-              ))),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const TitleResultWidget(),
+              const SizedBox(height: 42),
+              FormResultWidget(url: url)
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
