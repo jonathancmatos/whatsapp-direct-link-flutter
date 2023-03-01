@@ -29,9 +29,11 @@ O objetivo do projeto é fornecer uma base sólida para a implementação de sis
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+<div style="display: flex; justify-content: left; align-items: center;">
+<img src="https://github.com/jonathancmatos/whatsapp-direct-link-flutter/blob/main/imgs/Screenshot_1677616716.png?raw=true" alt="alt text" width="240">
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+<img src="https://github.com/jonathancmatos/whatsapp-direct-link-flutter/blob/main/imgs/Screenshot_1677616762.png?raw=true" alt="alt text" width="240">
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+<img src="https://github.com/jonathancmatos/whatsapp-direct-link-flutter/blob/main/imgs/Screenshot_1677616767.png?raw=true" alt="alt text" width="240">
+</div>
 
