@@ -16,15 +16,15 @@ O objetivo do projeto é fornecer uma base sólida para a implementação de sis
 
 - Gerar Link do WhatsApp
 - Copiar ou Abrir conversa direto pelo app
-- Histórico de Links gerados
+- Histórico de Links
 
 ## Packages Utilizados
 
- - [flutter_modular](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
- - [fpdart](https://github.com/matiassingers/awesome-readme)
- - [shared_preferences](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
-- [url_launcher](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
-- [clipboard](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
+ - [flutter_modular](https://pub.dev/packages/flutter_modular)
+ - [fpdart](https://pub.dev/packages/fpdart)
+ - [shared_preferences](https://pub.dev/packages/shared_preferences)
+- [url_launcher](https://pub.dev/packages/url_launcher)
+- [clipboard](https://pub.dev/packages/clipboard)
 
 
 ## Screenshots
